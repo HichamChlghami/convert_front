@@ -1,5 +1,3 @@
-
-
 "use client"
 
 import React, { useState, useEffect  } from 'react';
@@ -8,16 +6,15 @@ import { FaAngleDown, FaAngleUp  } from 'react-icons/fa';
 import { AiOutlineCloseCircle } from 'react-icons/ai';
 import { AiOutlineRight } from 'react-icons/ai';
 import { FaFolder  } from 'react-icons/fa';
-import { FaDropbox } from 'react-icons/fa';
-import { FaGoogleDrive } from 'react-icons/fa';
+
 import { BsArrowRight } from 'react-icons/bs';
 import { BiDownload } from 'react-icons/bi';
 import { BsBoxArrowUpRight } from 'react-icons/bs';
-import Navbar from './navbar/navbar';
 import JSZip from 'jszip';
 import { BsFillLockFill } from 'react-icons/bs';
 import { FaFileUpload } from 'react-icons/fa';
-import Footer from './footer/footer';
+import Footer from '@/app/footer/footer';
+import Navbar from '@/app/navbar/Navbar';
 function App() {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
   
@@ -72,50 +69,6 @@ const [downloadValidation , setDownloadValidation]=useState(true)
  
 const [defaultProgress , setDefaultProgress] = useState(0)
  
-  // const handleFileChange = (event) => {
-
-  //   const newFiles = Array.from(event.target.files);
-  //   const updatedFiles = [...files];
-  //   let newIndex = files.length; // Starting index for new files
-    
-  //   // Update only the selected formats for the newly uploaded files
-  //   const updatedFormats = { ...individualSelectedFormats };
-  
-  //   newFiles.forEach((newFile, i) => {
-  //     updatedFiles.push(newFile); // Add the new file
-  //     const fileExtension = newFile.name.split(".").pop();
-  //     const index = newIndex + i; // Calculate the index
-  //     updatedFormats[`${newFile.name}_${index}`] = fileExtension; // Set default format for new file
-  //   });
-  
-  //   event.target.value = '';
-
-
-  //   setSelectedFiles(updatedFiles);
-  //   setIndividualSelectedFormats(updatedFormats);
-
-  // };
-  
-
-  
-  // const handleDrop = (e) => {
-  //   e.preventDefault();
-  //   const newFiles = Array.from(e.dataTransfer.files);
-  //   const updatedFiles = [...files];
-  //   const updatedFormats = { ...individualSelectedFormats };
-  //   let newIndex = files.length; // Starting index for new files
-  
-  //   newFiles.forEach((newFile, i) => {
-  //     updatedFiles.push(newFile); // Add the new file
-  //     const fileExtension = newFile.name.split(".").pop();
-  //     const index = newIndex + i; // Calculate the index
-  //     updatedFormats[`${newFile.name}_${index}`] = fileExtension; // Set default format for new file
-  //   });
-  
-  //   setSelectedFiles(updatedFiles);
-  //   setIndividualSelectedFormats(updatedFormats);
-  // };
-  
 
   const handleDragOver = (e) => {
     e.preventDefault();
@@ -289,16 +242,12 @@ const handleFileUpload = async (e) => {
       if (validFormats.validImages.includes(fileExtension)) {
         if (validFormats.image_svg.includes(formatChose)) {
           uploadUrl = `${apiUrl}/images_svg`;
-
         } else if (validFormats.svg.includes(formatChose)) {
           uploadUrl = `${apiUrl}/svg`;
-
         } else if (validFormats.imagesDocx.includes(formatChose)) {
           uploadUrl = `${apiUrl}/imagesDocx`;
         } else if (validFormats.Txt.includes(formatChose)) {
           uploadUrl = `${apiUrl}/imagesTxt`;
-          // uploadUrl = 'https://okly-421508.ue.r.appspot.com/imagesTxt';
-
         } else if (validFormats.html.includes(formatChose)) {
           uploadUrl = `${apiUrl}/html`;
         }
@@ -404,9 +353,6 @@ const handleUpload = async (url, formData, fileName) => {
    
     const checkConversionProgress = async () => {
       try {
-
-      
-
         // this is for JS code start
         const responseVideoAudio = await axios.get(`${apiUrl}/progressVideoAudio`);
         const progress0 = responseVideoAudio.data.progress;
@@ -452,13 +398,13 @@ const handleUpload = async (url, formData, fileName) => {
     
 
 
-        setTotalConversionProgress({...progress0,...progress1, ...progress2  ,
+        setTotalConversionProgress({ ...progress0,...progress1, ...progress2  ,
           ...progress3 , ...progressHtml , ...progressImage , ...progressImageDocx , ...progressMicro , 
         ...progressSvg , ...progressTxt
         });
 
         // setTotalConversionProgress(res.data.total);
-        // console.log('responseImageTxt',responseImageTxt)
+        console.log('responseImageTxt',responseImageTxt)
 
       } catch (error) {
         console.log('Error while checking conversion progress:', error);
@@ -709,7 +655,7 @@ else if (validFormats.validVidoAudio.includes(fileExtension)) {
 
     {   
       category:[{la:"Audio"},{la:"Video"},{la:'Image'}],
-      Audio: ['MP3', 'AIFF', 'AAC', 'WMA', 'FLAC', 'M4A', 'MP2', 'OGA' , 'WAV'],
+      Audio: ['MP3', 'AIFF', 'AAC', 'WMA', 'FLAC', 'M4A', 'MP2', 'OGA'],
 Video: ['MOV', 'MP4', 'FLV', 'MKV', 'AVI', 'WEBM', 'WMV',  'OGV', 'MPG', 'MPEG', 'M4V', 'MJPEG', 'HEVC', 'SWF', 'TS', 'VOB'],
 Image:['GIF'],
       // Device:['xbox', 'mobile', 'kindle', 'ipad', 'Android', 'PSP', 'iphone'],
@@ -916,14 +862,6 @@ const handleMouseEnter = () => {
 };
 
 
-// useEffect(() => {
-//   if (convert.length > 0) {
-//     const completedFiles = convert.filter(item => totalConversionProgress[item.fileOutput] === 100);
-//     const allCompleted = completedFiles.length === type.length;
-//     setDownloadAll(allCompleted);
-//   }
-// }, [convert, totalConversionProgress]);
-
 useEffect(() => {
   if (convert.length > 0) {
     const completedFiles = convert.filter(item =>
@@ -970,15 +908,16 @@ const handleOpenNewTab = () => {
 };
 
 
+
   return (
+   <>
 
-<>
-
-<div className="convert" onDrop={handleDrop}onDragOver={handleDragOver}>
+   
+   <div className="convert" onDrop={handleDrop}onDragOver={handleDragOver}>
       <Navbar/>
       {/* <h1>Iam:{totalConversionProgress}</h1> */}
-      <h1 className='title'>Sit a File and Let us convert it</h1>
-      <p className='description'>Seamlessly switch file formats with our online converter.</p>
+      <h1 className='title'>ALAC to MP3 Converter</h1>
+      <p className='description'>Convert From ALAC To MP3 Online Free, Fast, Secure and in few clicks</p>
 
 
 
@@ -995,11 +934,17 @@ const handleOpenNewTab = () => {
   <label htmlFor="fileInput" className="custom-button_device">
 <FaFolder className='chose_files_device_icon'/>
 
-  Choose Files
-<input type="file"
-id="fileInput"
- multiple onChange={handleFileChange} 
-  className='chose_device_input'/>
+  Choose ALAC
+  <input 
+  type="file" 
+  id="fileInput" 
+  multiple 
+  onChange={handleFileChange} 
+  className='chose_device_input' 
+  ALACept=".ALAC" 
+/>
+
+
 
 </label>
   
@@ -1008,45 +953,8 @@ id="fileInput"
 
 </div>
 {/* <p className='update'>max file size 1BG <a href='/'>sign Up </a> for more</p> */}
-<p className='update'>"      <BsFillLockFill style={{color:"#2ecc71"}} /> Drop your files here"</p>
-{/* this for choose other devices */}
-{/* {
-  isHovered && (
+<p className='update'>"      <BsFillLockFill style={{color:"#2ecc71"}} /> Drop your ALAC here"</p>
 
-    <div className='chose_upload_files_container'>
-  
- 
-  <div className='chose_files_google'>
-
-<label htmlFor="fileInput" className='lable_1'>
-<FaGoogleDrive className='chose_files_device_icon'/>
-
-From Google Drive
-<input type="file"
-id="fileInput"
-multiple onChange={handleFileChange} 
-className='chose_device_input'/>
-
-</label>
-  </div>
-
-  <div className='  chose_files_dropbox '>
-
-<label htmlFor="fileInput" className='lable_1'>
-<FaDropbox className='chose_files_device_icon'/>
-
-From Dropbox
-<input type="file"
-id="fileInput"
-multiple onChange={handleFileChange} 
-className='chose_device_input'/>
-
-</label>
-  </div>
-
-</div>
-  )
-} */}
 
 
 </div>
@@ -1064,11 +972,16 @@ className='chose_device_input'/>
   <label htmlFor="fileInput" className="custom-button_device custom-button_device_section2">
 <FaFileUpload className='  chose_files_device_icon  chose_files_device_icon_section2'/>
 
-  Add More Files
-<input type="file"
-id="fileInput"
-multiple  onChange={handleFileChange} 
-  className='chose_device_input'/>
+  Add More ALAC
+  <input 
+  type="file" 
+  id="fileInput" 
+  multiple 
+  onChange={handleFileChange} 
+  className='chose_device_input' 
+  ALACept=".ALAC" 
+/>
+
 
 </label>
   
@@ -1078,49 +991,6 @@ multiple  onChange={handleFileChange}
 </div>
 
 
-
-{/* this  who when we click  button add more show */}
-{/* {
-  isHovered && (
-
-    <div className='chose_upload_files_container chose_upload_files_container_section2 '>
-  
- 
-  <div className='chose_files_google chose_files_google_section2'>
-
-  <label  htmlFor="fileInput"  className='lable_1'>
-      <FaFolder className='chose_files_device_icon chose_files_device_icon_section2' />
-      From Google Drive
-      <input
-        type="file"
-        id="fileInput"
-        multiple
-        onChange={handleFileChange}
-        className='chose_device_input'
-      />
-    </label>
-
-  </div>
-  <div className='chose_files_dropbox chose_files_dropbox_section2'>
-
-<label htmlFor="fileInput" className='lable_1'>
-<FaDropbox className='chose_files_device_icon'/>
-
-From Dropbox
-<input type="file"
-id="fileInput"
-multiple onChange={handleFileChange} 
-className='chose_device_input'/>
-
-</label>
-  </div>
-
-</div>
-  )
-} */}
-
-
-{/* this section for click convert and select all */}
 
 {files.length > 0 && (
   <div>
@@ -1449,11 +1319,11 @@ className='chose_device_input'/>
 <div className='describe_how_convert'>
   <div className='full_how_convert'>
     <img  className='Arrows' src='/Arrows.png' alt='arrows'/>
-    <h2 className='how_convert'>How to convert a file ?</h2>
+    <h2 className='how_convert'>How to convert from ALAC to MP3 ?</h2>
     </div>
-  <p className='description_p'>1.Convert your files easily by starting with selecting them using the 'Choose Files' button</p>
-  <p className='description_p'>2.Initiate the conversion process by choosing the desired format and clicking convert to</p>
-  <p className='description_p'>3.Once the conversion is complete, click 'Download' to retrieve your converted files</p>
+  <p className='description_p'>1.Begin by selecting your ALAC files with the 'Choose ALAC' button</p>
+  <p className='description_p'>2.Initiate the conversion process by clicking 'Convert to MP3</p>
+  <p className='description_p'>3.Once the status reads 'Done', hit 'Download MP3' to retrieve your converted files</p>
 </div>
 
 <div className='how_work_cards'>
@@ -1463,7 +1333,7 @@ className='chose_device_input'/>
     <h3 className='title_how_work_title'>Simplicity at its Core</h3>
   </div>
   <p className='how_work_description'>
-  Just upload your files and tap 'Convert'. Our tool guarantees the highest quality conversion. Unbeatable Features
+  Just upload your ALAC files and tap 'Convert'. Our tool guarantees the highest quality MP3 conversion
   </p>
 </div>
 
@@ -1473,8 +1343,7 @@ className='chose_device_input'/>
     <h3 className='title_how_work_title'>Unbeatable Features</h3>
   </div>
   <p className='how_work_description'>
-  Effortlessly convert batches files with our tool, which accommodates any file formats.
-  </p>
+  Effortlessly convert batches of ALAC images to MP3 with our tool, which also ALACommodates animated ALAC files.  </p>
 </div>
 
 
@@ -1484,8 +1353,7 @@ className='chose_device_input'/>
     <h3 className='title_how_work_title'> Free and Secure</h3>
   </div>
   <p className='how_work_description'>
-  Enjoy the benefits of a free, secure, and universally compatible tool accessible from any web browser. For added security and privacy, files are automatically deleted after a few hours.
-  </p>
+  Enjoy the benefits of a free, secure, and universally compatible tool ALACessible from any web browser. For added security and privacy, files are automatically deleted after a few hours  </p>
 </div>
 
 
@@ -1520,39 +1388,17 @@ className='chose_device_input'/>
 
 
 
-{/* {convert.length > 0 && (
-        <div>
-          <h2>Download Converted fileOutput</h2>
-          <button onClick={DownloadAll}>downloadAll</button>
-
-          {convert
-            .filter((item) => type.includes(item.fileOutput))
-            .map((c , index) => (
-              <div key={index} >
-                <div >
-                { totalConversionProgress[c.fileOutput]}%
-                  <progress max="100" value={ totalConversionProgress[c.fileOutput]}></progress>
-                </div>
-                <button onClick={() => handleDownload(c)}>
-                  Download
-                </button>
-              
-            <button onClick={() => handleDeleteInProgress(c.fileOutput)}>Delete</button>
-          
-              </div>
-            ))}
-        </div>
-      )} */}
 
 
 </div>
 
 
-<title>sitfile | The Ultimate Universal Converter and Compression Platform</title>
-  <meta name="description" content=" Convert & compress Files Above 1500+ Formats, Fast, Secure and Easy-to-use online tool, Supports Images, Documents, Audios, Videos and more" />
+<title>ALAC to MP3 Converter</title>
+  <meta name="description" content="Convert From ALAC To MP3 Online Free, Fast, Secure and in few clicks" />
 
-  <link rel="canonical" href="https://www.sitfile.com" />
-</>
+  <link rel="canonical" href="https://www.sitfile.com/audio/alac-mp3" />
+
+   </>
 
 
    
@@ -1562,78 +1408,3 @@ className='chose_device_input'/>
 }
 
 export default App;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// // frontend/src/FileUploaderDownloader.js
-// import React, { useState } from 'react';
-// import axios from 'axios';
-
-// const FileUploaderDownloader = () => {
-//   const [file, setFile] = useState(null);
-
-//   const handleFileChange = (e) => {
-//     setFile(e.target.files[0]);
-//   };
-
-//   const handleUpload = async () => {
-//     const formData = new FormData();
-//     formData.append('file', file);
-//     try {
-//       await axios.post('${apiUrl}/api/upload', formData, {
-//         headers: {
-//           'Content-Type': 'multipart/form-data'
-//         }
-//       });
-//       alert('File uploaded successfully!');
-//     } catch (error) {
-//       console.error('Error uploading file:', error);
-//     }
-//   };
-
-//   const handleDownload = async () => {
-//     try {
-//       const fileName = 'hicham.mp3'
-//       const response = await axios.get(`${apiUrl}/api/download?fileName=${fileName}`, {
-//         responseType: 'blob'
-//       });
-//       const downloadUrl = window.URL.createObjectURL(new Blob([response.data]));
-//       const link = document.createElement('a');
-//       link.href = downloadUrl;
-//       link.setAttribute('download', fileName); // Adjust filename if needed
-//       document.body.appendChild(link);
-//       link.click();
-//       link.remove();
-//     } catch (error) {
-//       console.error('Error downloading file:', error);
-//     }
-//   };
-
-//   return (
-//     <div>
-//       <input type="file" onChange={handleFileChange} />
-//       <button onClick={handleUpload}>Upload</button>
-//       <button onClick={handleDownload}>Download</button>
-//     </div>
-//   );
-// };
-
-// export default FileUploaderDownloader;
